@@ -8,6 +8,7 @@ var _ = {};
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -38,8 +39,14 @@ var _ = {};
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+    var len = array.length;
+    if(n > len){
+      return array;
+    }else{
+    return n === undefined ? array[len-1] : array.slice(len-n, len);
+    };
   };
-
+  //[1,2,3,4,5] 3 
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
   //
