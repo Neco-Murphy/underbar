@@ -46,13 +46,22 @@ var _ = {};
     return n === undefined ? array[len-1] : array.slice(len-n, len);
     };
   };
-  //[1,2,3,4,5] 3 
+
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
   //
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+      if(Array.isArray(collection)){
+        for(var i=0; i<collection.length; i++){
+          iterator(collection[i], i, collection);
+        };
+      }else{
+        for(var key in collection){
+          iterator(collection[key], key, collection);
+        };
+      };
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -74,12 +83,28 @@ var _ = {};
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var output = [];
+    _.each(collection, function(item){
+      if(test(item)){
+        output.push(item);
+      }
+    });
+
+    return output;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    var output = [];
+    _.each(collection, function(item){
+      if(!test(item)){
+        output.push(item);
+      }
+    });
+
+    return output;
   };
 
   // Produce a duplicate-free version of the array.
