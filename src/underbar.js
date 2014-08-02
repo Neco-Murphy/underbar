@@ -155,12 +155,19 @@ var _ = {};
 
   // Calls the method named by functionOrKey on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
-  _.invoke = function(collection, functionOrKey, args) {
-    var output = [];
-     _.each(collection, function(item){
-      output.push(collection[item].functionOrKey.apply(this, item));
-    });
+   _.invoke = function(collection, functionOrKey, args) {
+     var output =[];
+     if((typeof functionOrKey) === "string"){
+      _.each(collection, function(item){
+        output.push(item[functionOrKey](args));
+      });
+     }else{
+      for(var i=0; i<collection.length; i++){
+        output.push(functionOrKey.apply(collection[i], args));
+      };
+    };
      return output;
+        // functionOrKey.apply(null, [item]);
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -218,18 +225,19 @@ var _ = {};
     if(collection.length === 0){
       return false;
     };
+
     if(iterator === undefined){
       iterator = _.identity;
-    }
-    var count = 0;
-    _.every(collection, function(item){
-        if(iterator(item)){
-          return true;
-          count++;
-        };
-        return false;
-      });
-    return count === 0 ? false:true;
+    }; 
+    return _.reduce(collection, function(accumulator, item){
+      if(accumulator){
+        return true;
+      }else if(iterator(item)){
+        return true;
+      };
+      return false;
+    },false);
+
   };
 
 
@@ -329,6 +337,16 @@ var _ = {};
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var arr = [];
+    for(var i=2; i<arguments.length; i++){
+      arr.push(arguments[i]);
+    };
+    return window.setTimeout(function(){
+      func(arr);
+      // for(var j=0; j<arr.length; j++){
+      //   func(arr[j]);
+      // }
+    }, wait);
   };
 
 
@@ -343,6 +361,14 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var newArray = array.slice(0);
+    var result = [];
+    while(newArray.length > 0){
+      var place = Math.floor(Math.random() * newArray.length);
+      result.push(newArray[place]);
+      newArray.splice(place, 1);
+    }
+    return result;
   };
 
 
