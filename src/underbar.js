@@ -342,10 +342,7 @@ var _ = {};
       arr.push(arguments[i]);
     };
     return window.setTimeout(function(){
-      func(arr);
-      // for(var j=0; j<arr.length; j++){
-      //   func(arr[j]);
-      // }
+      func.apply(this, arr);
     }, wait);
   };
 
