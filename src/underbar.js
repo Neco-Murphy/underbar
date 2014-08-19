@@ -481,6 +481,25 @@ var _ = {};
   //
   // See the Underbar readme for details.
   _.throttle = function(func, wait) {
+    var count = 0;
+    var result;
+    var countClear = function(){
+      count = 0;
+    };
+
+    return function(){
+      if(count === 0){
+        // window.setTimeout(countClear, wait);
+        count++;
+        result = func();
+      }else{
+        count++;
+        window.setTimeout(function(){
+          result = func();
+        }, wait);  
+      }
+      return result;
+    }
   };
 
 }).call(this);
