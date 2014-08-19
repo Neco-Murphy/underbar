@@ -459,6 +459,15 @@ var _ = {};
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var output = array.slice(0);
+    for(var i=0; i<array.length; i++){
+      for(var j=1; j<arguments.length; j++){
+        if(arguments[j].indexOf(array[i]) !== -1){
+          output.splice(output.indexOf(array[i]),1);
+        }
+      }
+    }
+    return output;
   };
 
 
