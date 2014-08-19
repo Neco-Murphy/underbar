@@ -320,14 +320,21 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var history = {};
+    var result = {};
     return function(key){
-      if(history[key] === undefined){
-        var result = func.apply(this, arguments);
-        history[key] = result;
-      };
-      return history[key];
+      if(result[key] === undefined){
+        result[key] = func.apply(this, arguments);
+      }
+      return result[key];
     };
+    // var history = {};
+    // return function(key){
+    //   if(history[key] === undefined){
+    //     var result = func.apply(this, arguments);
+    //     history[key] = result;
+    //   };
+    //   return history[key];
+    // };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -380,6 +387,15 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+       
+    collection.sort(function(a,b){ 
+      if(typeof iterator === "string"){
+        return a[iterator] - b[iterator];
+      }else{
+        return iterator(a) - iterator(b);
+      } 
+    });
+    return collection;
   };
 
   // Zip together two or more arrays with elements of the same index
