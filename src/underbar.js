@@ -410,7 +410,7 @@ var _ = {};
     for(var i=0; i<arguments.length; i++){
       max = max < arguments[i].length ?  arguments[i].length:max;
     };
-    
+
     for(var i=0; i<arguments.length; i++){
       for(var j=0; j<max; j++){
         if(output[j] === undefined){
@@ -428,6 +428,18 @@ var _ = {};
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    var output =[];
+    var check = function(arr){
+      for(var i=0; i<arr.length; i++){
+        if(Array.isArray(arr[i])){
+          check(arr[i]);
+        }else{
+          output.push(arr[i]);
+        };
+      }
+    };
+    check(nestedArray);
+    return output;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
